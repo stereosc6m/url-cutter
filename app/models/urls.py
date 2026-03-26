@@ -1,5 +1,6 @@
-from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String, Integer, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from app.core.db import Base, CommonMixin
 
 
@@ -14,3 +15,10 @@ class UrlModel(CommonMixin, Base):
         unique=True,
         nullable=False
     )
+    user_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey('user.id'),
+        nullable=True
+    )
+
+    user = relationship('User', back_populates='urls')

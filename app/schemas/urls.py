@@ -2,6 +2,8 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from .user import UserInfo
+
 
 class UrlCreate(BaseModel):
     original_url: str = Field(
@@ -17,3 +19,7 @@ class UrlCreate(BaseModel):
 
 class UrlInfo(UrlCreate):
     id: int
+    user: UserInfo
+
+    class Config:
+        from_attributes = True
