@@ -8,12 +8,13 @@ from .urls import UrlInfo
 
 class CollectionCreate(BaseModel):
     title: str = Field(max_length=100)
+    is_public: bool = Field(default=False)
 
 
 class CollectionInfo(BaseModel):
     title: str
     user: UserInfo
-    urls: List[UrlInfo]
+    urls: List[UrlInfo] = []
 
     class Config:
         from_attributes = True

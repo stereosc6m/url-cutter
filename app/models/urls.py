@@ -22,6 +22,10 @@ class UrlModel(CommonMixin, Base):
     )
 
     user = relationship('User', back_populates='urls')
+    collections = relationship(
+        'UrlCollection',
+        back_populates='url'
+    )
 
 
 class UrlCollection(CommonMixin, Base):

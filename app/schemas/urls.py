@@ -1,15 +1,12 @@
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, HttpUrl, Field
 
 from .user import UserInfo
 
 
 class UrlCreate(BaseModel):
-    original_url: str = Field(
-        max_length=200,
-        description='Ссылка',
-    )
+    original_url: HttpUrl
     short_url: Optional[str] = Field(
         max_length=16,
         description='Короткая ссылка',

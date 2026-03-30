@@ -25,6 +25,7 @@ class UrlCRUD():
         user: User
     ) -> UrlInfo:
         object_in = obj_in.model_dump()
+        object_in['original_url'] = str(object_in['original_url'])
         object_in['user_id'] = user.id
         if object_in['short_url'] is None:
             short_link = ''
@@ -46,7 +47,7 @@ class UrlCRUD():
                 self.model.original_url == original_url
             )
         )
-        return result.scalars().one_or_none()
+        return result.scalars().first()
 
     async def get_by_short_url(
         self,
@@ -89,6 +90,19 @@ class UrlCRUD():
             )
         )
         return result.scalars().all()
+
+    async def get_relation_url_and_collection(
+        self,
+        url_id: int,
+        collection_id: int,
+        session: AsyncSession
+    ) -> UrlCollection:
+        result = await session.execute(
+            select(UrlCollection).where(
+                UrlCollection.collection_id == collection_id
+            ).where(UrlCollection.url_id == url_id)
+        )
+        return result.scalars().one_or_none()
 
     async def save_url_to_collection(
         self,
