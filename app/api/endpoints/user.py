@@ -3,7 +3,7 @@ from fastapi import APIRouter
 from app.core.user import auth_backend, fastapi_users
 from app.schemas.user import UserCreate, UserRead, UserUpdate
 
-router = APIRouter()
+router = APIRouter(tags=['Управление пользователями'])
 
 router.include_router(
     fastapi_users.get_auth_router(auth_backend),

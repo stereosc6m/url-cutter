@@ -13,7 +13,7 @@ from app.services.collection import create_new_collection
 
 SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
 
-router = APIRouter()
+router = APIRouter(tags=['Коллекции'])
 
 
 @router.post('/')
@@ -27,3 +27,19 @@ async def create_user_collection(
         user,
         session
     )
+
+
+@router.get('/{collection_id}')
+async def view_collection(
+    collection_id: int,
+    session: SessionDep
+) -> CollectionInfo:
+    pass
+
+
+@router.get('/')
+async def view_user_collections(
+    user:Annotated[User, Depends(current_user)],
+    session: SessionDep
+) -> List[CollectionInfo]:
+    pass

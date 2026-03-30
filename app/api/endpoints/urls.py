@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.services.urls import (
     creating_url,
     get_one_url_by_short_link,
-    get_sequency_of_user_urls
+    get_sequency_of_user_urls,
+    add_url_and_collection
 )
 from app.schemas.urls import UrlCreate, UrlInfo
 from app.core.db import get_async_session
@@ -15,7 +16,7 @@ from app.models import User
 
 SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
 
-router = APIRouter()
+router = APIRouter(tags=['URL'])
 
 
 @router.post('/')
@@ -34,6 +35,16 @@ async def url_get_by_short_link(
 ) -> UrlInfo:
     return await get_one_url_by_short_link(url_short_link, session)
 
+
+@router.post('/{url_id}/{collection_id}')
+async def add_url_to_collection(
+    url_id: int,
+    collection_id: int,
+    session: SessionDep
+) -> UrlInfo:
+    return await add_url_and_collection(
+        url_id, collection_id, session
+    )
 
 @router.get('/')
 async def urls_user_get(

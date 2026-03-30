@@ -1,8 +1,9 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, Field
 
 from .user import UserInfo
+from .urls import UrlInfo
 
 
 class CollectionCreate(BaseModel):
@@ -12,6 +13,7 @@ class CollectionCreate(BaseModel):
 class CollectionInfo(BaseModel):
     title: str
     user: UserInfo
+    urls: List[UrlInfo]
 
     class Config:
         from_attributes = True

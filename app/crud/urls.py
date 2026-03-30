@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
 from app.schemas.urls import UrlCreate, UrlInfo
-from app.models import UrlModel, User
+from app.models import UrlModel, User, UrlCollection
 from app.core.constants import URL_GENERATOR
 
 
@@ -62,6 +62,20 @@ class UrlCRUD():
         )
         return result.scalars().one_or_none()
 
+    async def get_by_url_id(
+        self,
+        url_id: int,
+        session: AsyncSession
+    ) -> UrlModel:
+        result = await session.execute(
+            select(self.model).options(
+                joinedload(self.model.user)
+            ).where(
+                self.model.id == url_id
+            )
+        )
+        return result.scalars().one_or_none()
+
     async def get_user_urls(
         self,
         user: User,
@@ -75,6 +89,17 @@ class UrlCRUD():
             )
         )
         return result.scalars().all()
+
+    async def save_url_to_collection(
+        self,
+        url_id: int,
+        collection_id: int,
+        session: AsyncSession
+    ) -> None:
+        obj_db = UrlCollection(url_id=url_id, collection_id=collection_id)
+        session.add(obj_db)
+        await session.commit()
+        return None
 
 
 urls_crud = UrlCRUD(UrlModel)

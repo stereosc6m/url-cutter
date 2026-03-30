@@ -4,7 +4,7 @@ from sqlalchemy.orm import joinedload
 
 from app.models.user import User
 from app.models.collection import Collection
-from app.schemas.collection import CollectionCreate
+from app.schemas.collection import CollectionCreate, CollectionInfo
 
 
 class CollectionCRUD():
@@ -28,5 +28,11 @@ class CollectionCRUD():
         await session.commit()
         return result
 
+async def get_collection(
+    self,
+    collection_id: int,
+    session: AsyncSession
+) -> CollectionInfo:
+    
 
 collection_crud = CollectionCRUD(Collection)

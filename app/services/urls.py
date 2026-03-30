@@ -51,3 +51,16 @@ async def get_sequency_of_user_urls(
     session: AsyncSession
 ) -> List[UrlInfo]:
     return await urls_crud.get_user_urls(user, session)
+
+
+async def add_url_and_collection(
+    url_id: int,
+    collection_id: int,
+    session: AsyncSession
+) -> UrlInfo:
+    await urls_crud.save_url_to_collection(
+        url_id, collection_id, session
+    )
+    return await urls_crud.get_by_url_id(
+        url_id, session
+    )
